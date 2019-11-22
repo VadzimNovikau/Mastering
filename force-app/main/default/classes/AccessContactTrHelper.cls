@@ -1,4 +1,5 @@
 public with sharing class AccessContactTrHelper {
+    // Всем юзерам по иерархии выше предоставляется доступ к контактам, созданным юзером
     public static Set<ID> getParentRoleId(Set<ID> roleIds){
         system.debug('roleIds>>>> '+roleIds);
         Set<ID> currentRoleIds = new Set<ID>();
