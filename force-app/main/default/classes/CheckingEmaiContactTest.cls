@@ -1,6 +1,6 @@
 @isTest
 public class CheckingEmaiContactTest {
-   
+    @TestSetup
     public static void setup(){
        List<Account> listAccounts = new List<Account>();
        List<AccountLinking__c> custonSettingsList = new List<AccountLinking__c>();
@@ -19,7 +19,7 @@ public class CheckingEmaiContactTest {
     
     @isTest  
     static void putContact() {
-       setup();
+       //setup();
        Account accountTest = new Account(Name = 'TestAcc');
        insert accountTest;
   
@@ -42,7 +42,7 @@ public class CheckingEmaiContactTest {
     
     @isTest  
     static void putListContacts() {
-       setup();
+       //setup();
        Account accountTest = new Account(Name = 'TestAcc');
        insert accountTest;
        
