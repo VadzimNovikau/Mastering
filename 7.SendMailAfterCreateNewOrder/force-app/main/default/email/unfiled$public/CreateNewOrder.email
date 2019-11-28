@@ -1,0 +1,26 @@
+<messaging:emailTemplate subject="New order" recipientType="User" relatedToType="Orders__c">
+<messaging:plainTextEmailBody >
+Congratulations!
+This is your new Visualforce Email Template.
+</messaging:plainTextEmailBody>
+
+<messaging:htmlEmailBody >
+    <html>
+        <body>
+        <p>Hello {!recipient.Name} </p>
+        <p>You have new order {!relatedTo.Name}:</p>
+        <apex:datatable cellpadding="5" var="o" value="{!relatedTo}">
+            <apex:column value="{!o.Delivery_type__r.Name}" headerValue="Delivery type"/>
+            <apex:column value="{!o.Weight__c}" headerValue="Weight"/>
+            <apex:column value="{!o.Price__c}" headerValue="Price" />
+            <apex:column value="{!o.Delivery_date__c}" headerValue="Date" />
+        </apex:datatable>
+        <apex:image url="https://peredmistia.com.ua/wp-content/uploads/2016/02/yartrans-content_transport.png"  width="80%" alt="cool truck" style="margin-top: 2%"/>
+        </body>
+    </html>
+    </messaging:htmlEmailBody>
+
+
+
+
+</messaging:emailTemplate>
