@@ -1,0 +1,140 @@
+<apex:page Controller="OrdersController">
+
+  <apex:form id="order">
+    <apex:pageBlock title="{!$Label.New_Edit}">
+      <apex:commandButton value="{!closeNewButton}" action="{!show}" />
+      <apex:pageMessages id="showmsg"></apex:pageMessages>
+      <apex:pageBlockSection columns="1" rendered="{!showForm}">
+        <apex:selectList label="{!$Label.Delivery_by}" value="{!ord.Delivery_type__c}" size="1" multiselect="false">
+          <apex:selectOptions value="{!selectValues}" />
+        </apex:selectList>
+        <apex:pageBlockSection columns="1">
+          <apex:commandButton value="{!$Label.Information_about_delivery}" action="{!information}" onclick="showSpinner()" />
+          <apex:outputText label="{!$Label.Name} " value="{!dType.Name}" />
+          <apex:outputText label="{!$Label.Max_weight} " value="{!dType.Max_weight__c}" />
+          <apex:outputText label="{!$Label.Price_shipping_1_kg} " value="{!dType.Price_shipping_1_kg__c}" />
+          <apex:outputText label="{!$Label.Delivery_days} " value="{!dType.Delivery_days__c}" />
+        </apex:pageBlockSection>
+        <apex:inputText label="{!$Label.Delivery_type} *" value="{!ord.Name}" />
+        <apex:inputText label="{!$Label.Weight}" value="{!ord.Weight__c}" />
+        <apex:inputField label="{!$Label.Delivery_date}" value="{!ord.Delivery_date__c}" />
+        <apex:panelGroup>
+          <apex:commandButton value="{!$Label.Cancel}" action="{!clear}" onclick="showSpinner()" id="order" />
+          <apex:commandButton value="{!$Label.Save}" action="{!save}" onclick="showSpinner()" />
+        </apex:panelGroup>
+      </apex:pageBlockSection>
+    </apex:pageBlock>
+  </apex:form>
+
+  <apex:form id="form">
+    <apex:pageBlock title="{!$Label.Orders}">
+      <apex:inputText value="{!searchString}" label="Input" />
+      <apex:commandButton value="{!$Label.Search}" action="{!searchRecord}" />
+      <apex:commandButton value="{!$Label.Show_all}" action="{!clear}" />
+      <apex:outputText>
+        {!$Label.Format_date_for_search}
+      </apex:outputText>
+      <apex:commandButton value="PDF" action="{!goToPDFforOrders}" onclick="showSpinner()" style="float:right" />
+      <apex:pageBlockTable value="{!ordersList}" var="o" id="orderData">
+        <apex:column value="{!o.Name}">
+          <!--apex:InputText value="{!o.Name}"/-->
+          <apex:facet name="header">
+            <apex:commandLink action="{!sortNameColumn}" reRender="orderData">
+              <apex:outputText value="{!$Label.Delivery_type}" />
+            </apex:commandLink>
+          </apex:facet>
+        </apex:column>
+        <apex:column value="{!o.Weight__c}">
+          <apex:facet name="header">
+            <apex:commandLink action="{!sortWeightColumn}" reRender="orderData">
+              <apex:outputText value="{!$Label.Weight} " />
+            </apex:commandLink>
+          </apex:facet>
+        </apex:column>
+        <apex:column value="{!o.Price__c}">
+          <apex:facet name="header">
+            <apex:commandLink action="{!sortPriceColumn}" reRender="orderData">
+              <apex:outputText value="{!$Label.Price}" />
+            </apex:commandLink>
+          </apex:facet>
+        </apex:column>
+        <apex:column value="{!o.Delivery_date__c}">
+          <apex:facet name="header">
+            <apex:commandLink action="{!sortDateColumn}" reRender="orderData">
+              <apex:outputText value="{!$Label.Delivery_date}" />
+            </apex:commandLink>
+          </apex:facet>
+        </apex:column>
+        <apex:column>
+          <!--apex:outputLink title="" value="/{!o.id}/e?retURL=/apex/{!$CurrentPage.Name}" style="font-weight:bold">Edit</apex:outputLink>&nbsp;|&nbsp;-->
+          <apex:commandLink action="{!editOrder}" reRender="order" value="{!$Label.Edit}">&nbsp;|&nbsp;
+            <apex:param name="accountid" value="{!o.Id}" assignTo="{!orderId}" />
+          </apex:commandLink>
+          <apex:commandLink action="{!deleteOrder}" reRender="form" value="{!$Label.Delete}">
+            <apex:param name="accountid" value="{!o.Id}" assignTo="{!orderId}" />
+          </apex:commandLink>
+        </apex:column>
+      </apex:pageBlockTable>
+      <!--apex:pageBlockButtons >
+          <apex:commandButton value="New" action="https://ap15.salesforce.com/a01/e?retURL=%2Fa01%2Fo" />
+     </apex:pageBlockButtons-->
+    </apex:pageBlock>
+  </apex:form>
+
+  <style>
+    #spinner {
+      display: none;
+      width: 200px;
+      height: 50px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      text-align: center;
+      padding: 10px;
+      font: normal 16px Tahoma, Geneva, sans-serif;
+      margin-left: -100px;
+      margin-top: -100px;
+      z-index: 2;
+      overflow: auto;
+      border: 1px solid #CCC;
+      background-color: white;
+      z-index: 100;
+      padding: 5px;
+      line-height: 20px;
+    }
+
+    #opaque {
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      display: none;
+      background-color: gray;
+      filter: alpha(opacity=30);
+      opacity: 0.3;
+      -moz-opacity: 0.3;
+      -khtml-opacity: 0.3
+    }
+
+    * html #opaque {
+      position: absolute;
+    }
+  </style>
+
+  <div id="opaque" />
+  <div id="spinner">
+    <p align="center" style='{font-family:"Arial", Helvetica, sans-serif; font-size:20px;}'>
+      <apex:image value="/img/loading.gif" />&nbsp;Please wait</p>
+  </div>
+
+  <script>
+    function showSpinner() {
+      document.getElementById('opaque').style.display = 'block';
+      var popUp = document.getElementById('spinner');
+      popUp.style.display = 'block';
+    } 
+  </script>
+
+</apex:page>

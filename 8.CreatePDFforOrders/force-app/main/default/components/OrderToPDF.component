@@ -1,0 +1,10 @@
+<apex:component Controller="OrdersControllerForPDF">
+    <apex:attribute name="rep" type="String" assignTo="{!reportId}" description="Id of the expense report"/>
+        <apex:datatable cellpadding="5" border="1" var="o" value="{!ordersList}">
+            <apex:column value="{!o.Delivery_type__r.Name}" headerValue="Delivery type"/>
+            <apex:column value="{!o.Name}" headerValue="Name"/>
+            <apex:column value="{!o.Weight__c}" headerValue="Weight"/>
+            <apex:column value="{!o.Price__c}" headerValue="Price" />
+            <apex:column value="{!o.Delivery_date__c}" headerValue="Date" />
+        </apex:datatable>
+</apex:component>
