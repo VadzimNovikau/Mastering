@@ -153,8 +153,8 @@ public class OrdersController {
         ];           
     }
     
-    public pageReference goToPDFforOrders() {
+    /*public pageReference goToPDFforOrders() {
         PageReference pf = new PageReference('/apex/PDFforOrders');
         return pf;
-    }
+    }*/
 }
