@@ -7,6 +7,6 @@ trigger ContactTrig on Contact (after insert, before insert, before update) {
     }
     if (Trigger.isBefore && Trigger.isInsert) {
             FillingMobileOperatorInContactTrHelper.checkingProcess(trigger.new);
-    } 
+    }
 
 }
