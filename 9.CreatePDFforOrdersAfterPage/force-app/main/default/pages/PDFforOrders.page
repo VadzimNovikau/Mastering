@@ -1,0 +1,30 @@
+<apex:page renderAs="pdf" Controller="OrdersControllerForPDF" showHeader="false" sidebar="false" standardStylesheets="false"
+    applyBodyTag="false" applyHtmlTag="false">
+    <html>
+
+    <head>
+        <style>
+            @page {
+                @bottom-center {
+                    content: counter(page);
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <p align="center">ALL INFORMATION ABOUT ORDERS</p>
+        <apex:repeat value="{!deliveryTypes}" var="dt" id="theRepeat">
+            <p>Delivery type: {!dt.Name}</p>
+            <apex:image rendered="{!IF(dt.Name == 'Plane', true, false)}" url="{!$Resource.Plane}" width="400" height="250" />
+            <apex:image rendered="{!IF(dt.Name == 'Truck', true, false)}" url="{!$Resource.Truck}" width="300" height="250" />
+            <apex:image rendered="{!IF(dt.Name == 'Train', true, false)}" url="{!$Resource.Train}" width="300" height="250" />
+            <apex:image rendered="{!IF(dt.Name == 'Ship', true, false)}" url="{!$Resource.Ship}" width="250" height="250" />
+            <apex:image rendered="{!IF(dt.Name == 'Car', true, false)}" url="{!$Resource.Car}" width="450" height="250" />
+            <p>Orders by {!dt.Name}:</p>
+            <c:OrderToPDF rep="{!dt.id}"></c:OrderToPDF>
+        </apex:repeat>
+    </body>
+
+    </html>
+</apex:page>
